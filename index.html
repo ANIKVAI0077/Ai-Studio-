@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111d32"><title>AI Photo Studio Pro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="logo">PS</span><span><b>PHOTO STUDIO</b><small>PRO PROCESSING WORKSPACE</small></span></a>
+  <div class="topright"><span class="live"></span> লোকাল এডিটর সক্রিয় <span class="version">VERSION 2.0</span></div>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <div><p class="eyebrow">PROFESSIONAL PHOTOGRAPHY WORKFLOW</p><h1>Passport Photo <em>Studio</em></h1><p>একসঙ্গে ছবি আপলোড করুন, ক্রপ ঠিক করুন, পাসপোর্ট সাইজ তৈরি ও প্রিন্ট করুন।</p></div>
+    <div class="hero-tag"><b>20</b><span>MAX PHOTOS<br>PER BATCH</span></div>
+  </section>
+
+  <section class="upload-panel panel">
+    <div class="section-head"><div><span class="step">01</span><div><h2>কাস্টমারের ছবি আপলোড</h2><p>একসঙ্গে সর্বোচ্চ ২০টি JPG, PNG অথবা WEBP ছবি নির্বাচন করুন।</p></div></div><span class="count" id="photoCount">০ / ২০ ছবি</span></div>
+    <label class="dropzone" id="dropzone" for="photoInput">
+      <span class="upload-symbol">↑</span><b>ছবি এখানে টেনে আনুন অথবা নির্বাচন করুন</b><small>প্রতিটি ছবি সর্বোচ্চ ২০ MB · JPG / PNG / WEBP</small><span class="select-file">ছবি নির্বাচন করুন</span>
+      <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+    </label>
+    <div class="queue-head"><b>আপলোড করা ছবি</b><button class="link-btn" id="clearAll" disabled>সব ছবি মুছুন</button></div>
+    <div class="photo-queue" id="photoQueue"><div class="queue-empty">এখনো কোনো ছবি যোগ করা হয়নি</div></div>
+  </section>
+
+  <section class="main-grid">
+    <section class="panel editor">
+      <div class="section-head"><div><span class="step">02</span><div><h2>ছবি ক্রপ ও এডিট</h2><p>নিচের তালিকা থেকে ছবি নির্বাচন করে ফ্রেম ঠিক করুন।</p></div></div><span class="editing-label" id="editingLabel">কোনো ছবি নির্বাচন নেই</span></div>
+      <div class="preview-wrap"><div class="preview-stage" id="previewStage"><div class="empty-preview"><span>▧</span><b>ছবি প্রিভিউ</b><small>প্রথমে ছবি আপলোড করুন</small></div><canvas id="preview" hidden></canvas></div></div>
+      <div class="preview-meta"><span id="previewDims">কোনো ছবি নেই</span><span>লাইভ ক্রপ প্রিভিউ</span></div>
+      <div class="control-section">
+        <div class="control-title">ক্রপ ও ফ্রেম সেটিং</div>
+        <div class="control-grid">
+          <label>জুম <output id="zoomOut">1.0×</output><input id="zoom" type="range" min="1" max="3" step=".01" value="1"></label>
+          <label>ডানে / বামে <output id="panXOut">0</output><input id="panX" type="range" min="-100" max="100" value="0"></label>
+          <label>উপরে / নিচে <output id="panYOut">0</output><input id="panY" type="range" min="-100" max="100" value="0"></label>
+          <label>ঘোরানো <output id="rotateOut">0°</output><input id="rotate" type="range" min="-15" max="15" value="0"></label>
+        </div>
+        <div class="button-row"><button class="btn light" id="centerCrop">অটো ফিট / সেন্টার</button><button class="btn light" id="rotateReset">ঘোরানো রিসেট</button></div>
+      </div>
+      <div class="control-section">
+        <div class="control-title">কালার গ্রেডিং</div>
+        <div class="control-grid">
+          <label>উজ্জ্বলতা <output id="brightOut">100%</output><input id="brightness" type="range" min="50" max="150" value="100"></label>
+          <label>কনট্রাস্ট <output id="contrastOut">100%</output><input id="contrast" type="range" min="50" max="160" value="100"></label>
+          <label>স্যাচুরেশন <output id="satOut">100%</output><input id="saturation" type="range" min="0" max="180" value="100"></label>
+          <label>ওয়ার্মথ <output id="warmOut">0</output><input id="warmth" type="range" min="-40" max="40" value="0"></label>
+        </div>
+        <div class="button-row"><button class="btn light" id="resetColor">কালার রিসেট</button></div>
+      </div>
+    </section>
+
+    <aside class="panel settings">
+      <div class="section-head"><div><span class="step">03</span><div><h2>আউটপুট সেটিং</h2><p>তৈরি ছবির মাপ ও ব্যাকগ্রাউন্ড।</p></div></div></div>
+      <label class="field">ছবির সাইজ<select id="size" class="input"><option value="passport">পাসপোর্ট — ৩৫ × ৪৫ মিমি</option><option value="nid">NID — ৩৫ × ৪৫ মিমি</option><option value="square">২ × ২ ইঞ্চি</option><option value="custom">কাস্টম সাইজ</option><option value="original">অরিজিনাল অনুপাত</option></select></label>
+      <div class="two-fields" id="customFields" hidden><label class="field">প্রস্থ (মিমি)<input id="customW" class="input" type="number" min="10" max="200" value="35"></label><label class="field">উচ্চতা (মিমি)<input id="customH" class="input" type="number" min="10" max="200" value="45"></label></div>
+      <label class="field">প্রিন্ট রেজোলিউশন<select id="dpi" class="input"><option value="300">300 DPI — প্রফেশনাল প্রিন্ট</option><option value="200">200 DPI</option><option value="150">150 DPI</option></select></label>
+      <label class="field">ব্যাকগ্রাউন্ড<select id="background" class="input"><option value="white">সাদা</option><option value="blue">নীল</option><option value="red">লাল</option><option value="gray">হালকা ধূসর</option><option value="original">অরিজিনাল / স্বচ্ছ</option></select></label>
+      <div class="size-info" id="sizeInfo">৩৫ × ৪৫ মিমি · 300 DPI · ৪১৩ × ৫৩১ px</div>
+      <label class="field">ফাইল ফরম্যাট<select id="format" class="input"><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WEBP</option></select></label>
+      <label class="field">ছবির কোয়ালিটি <output id="qualityOut">95%</output><input id="quality" type="range" min="60" max="100" value="95"></label>
+      <div class="divider"></div>
+      <button id="generate" class="btn primary full" disabled>✦　পাসপোর্ট সাইজ তৈরি করুন</button>
+      <button id="downloadAll" class="btn secondary full" disabled>↓　সব তৈরি ছবি ZIP ডাউনলোড</button>
+      <p class="small-note">প্রতিটি আপলোড করা ছবির জন্য আলাদা আউটপুট তৈরি হবে। ছবির ফ্রেম ও রঙ ঠিক করে তারপর তৈরি করুন।</p>
+    </aside>
+  </section>
+
+  <section class="panel results" id="resultsPanel">
+    <div class="section-head"><div><span class="step">04</span><div><h2>তৈরি করা ছবি</h2><p>প্রতিটি ছবি আলাদাভাবে ডাউনলোড করুন অথবা সবগুলো একসঙ্গে নিন।</p></div></div><span class="count" id="resultCount">০টি তৈরি</span></div>
+    <div id="resultsGrid" class="results-grid"><div class="results-empty">তৈরি করা ছবিগুলো এখানে দেখা যাবে।</div></div>
+  </section>
+
+  <section class="panel print-panel">
+    <div class="section-head"><div><span class="step">05</span><div><h2>প্রিন্ট লেআউট</h2><p>নির্বাচিত তৈরি ছবির ৪×৬ ইঞ্চি প্রিন্ট শিট বানান।</p></div></div></div>
+    <div class="print-controls"><label class="field">প্রতি ছবির কপি সংখ্যা<select id="copies" class="input"><option value="1">১ কপি</option><option value="2">২ কপি</option><option value="4">৪ কপি</option><option value="6" selected>৬ কপি</option></select></label><button class="btn secondary" id="printSheet" disabled>প্রিন্ট শিট তৈরি / প্রিন্ট</button></div>
+    <p class="small-note">প্রথমে উপরের ফলাফল থেকে একটি ছবি তৈরি করুন। তারপর তার প্রিন্ট শিট তৈরি করতে পারবেন।</p>
+  </section>
+
+  <footer class="developer">
+    <div class="dev-label">WEBSITE DESIGN & DEVELOPMENT</div>
+    <div class="dev-content"><div class="dev-avatar"><img src="assets/developer-photo.jpg" alt="Developer" onerror="this.style.display='none';this.parentElement.classList.add('avatar-fallback')"><span>AM</span></div><div class="dev-info"><small>DEVELOPED BY</small><h3>MD ANIK MIA</h3><p>Web Developer · Digital Solutions</p><a href="https://wa.me/8801759935473" target="_blank" rel="noopener">WhatsApp: 01759935473 ↗</a></div><div class="dev-stamp">AI PHOTO<br>STUDIO PRO</div></div>
+    <div class="copyright">© 2026 AI Photo Studio Pro. All rights reserved.</div>
+  </footer>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="script.js"></script>
+</body></html>
