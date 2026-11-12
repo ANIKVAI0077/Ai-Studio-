@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101a2c">
+  <title>AI Photo Studio Pro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-mark">PS</span><span><b>PHOTO STUDIO</b><small>PRO EDITING WORKSPACE</small></span></a>
+    <div class="top-actions"><span class="status-dot"></span><span>লোকাল এডিটর সক্রিয়</span><button id="resetAll" class="btn btn-ghost">রিসেট</button></div>
+  </header>
+
+  <main class="app-shell">
+    <section class="intro">
+      <div><p class="eyebrow">PROFESSIONAL PHOTOGRAPHY WORKFLOW</p><h1>AI Photo Studio <em>Pro</em></h1><p class="sub">স্টুডিও, ফটোশপ ও ডিজিটাল সার্ভিসের কাজের জন্য সহজ ছবি এডিটিং ও এক্সপোর্ট workspace।</p></div>
+      <div class="intro-chip"><span>01</span> ছবি আপলোড <i>→</i><span>02</span> এডিট <i>→</i><span>03</span> ডাউনলোড</div>
+    </section>
+
+    <section class="workspace">
+      <aside class="panel left-panel">
+        <div class="panel-heading"><div><span class="step">01</span><h2>ছবি নির্বাচন</h2></div><span class="tiny-label">SOURCE</span></div>
+        <label class="upload-box" for="photoInput" id="dropZone">
+          <span class="upload-icon">＋</span><b>ছবি আপলোড করুন</b><small>JPG, PNG, WEBP · সর্বোচ্চ ২০ MB</small><span class="choose-btn">ফাইল নির্বাচন</span>
+          <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp">
+        </label>
+        <div class="file-info" id="fileInfo">এখনো কোনো ছবি নির্বাচন করা হয়নি</div>
+        <div class="divider"></div>
+        <div class="panel-heading compact"><div><span class="step">02</span><h2>ছবির সাইজ</h2></div></div>
+        <label class="field-label" for="sizePreset">প্রিসেট সাইজ</label>
+        <select id="sizePreset" class="control">
+          <option value="original">অরিজিনাল অনুপাত</option>
+          <option value="passport">পাসপোর্ট ৩৫ × ৪৫ মিমি</option>
+          <option value="nid">NID / পরিচয়পত্র ৩৫ × ৪৫ মিমি</option>
+          <option value="square">স্কয়ার ২ × ২ ইঞ্চি</option>
+          <option value="4x6">প্রিন্ট ৪ × ৬ ইঞ্চি</option>
+          <option value="custom">কাস্টম সাইজ</option>
+        </select>
+        <div class="size-row" id="customSize" hidden>
+          <div><label class="field-label" for="customW">প্রস্থ (মিমি)</label><input class="control" id="customW" type="number" min="10" max="500" value="35"></div>
+          <div><label class="field-label" for="customH">উচ্চতা (মিমি)</label><input class="control" id="customH" type="number" min="10" max="500" value="45"></div>
+        </div>
+        <label class="field-label" for="dpi">প্রিন্ট রেজোলিউশন</label>
+        <select id="dpi" class="control"><option value="300">300 DPI — প্রিন্টের জন্য</option><option value="200">200 DPI</option><option value="150">150 DPI</option></select>
+        <div class="size-readout" id="sizeReadout">ছবি নির্বাচন করলে আউটপুট সাইজ দেখাবে</div>
+        <div class="divider"></div>
+        <div class="panel-heading compact"><div><span class="step">03</span><h2>এক্সপোর্ট</h2></div></div>
+        <label class="field-label" for="format">ফাইল ফরম্যাট</label>
+        <select id="format" class="control"><option value="image/jpeg">JPG</option><option value="image/png">PNG</option><option value="image/webp">WEBP</option></select>
+        <label class="field-label" for="quality">JPG / WEBP কোয়ালিটি <b id="qualityValue">92%</b></label>
+        <input id="quality" class="range" type="range" min="50" max="100" value="92">
+        <button id="downloadBtn" class="btn btn-primary full" disabled>↓　এডিট করা ছবি ডাউনলোড</button>
+        <button id="printBtn" class="btn btn-secondary full" disabled>প্রিন্ট / প্রিন্ট প্রিভিউ</button>
+        <p class="privacy-note">🔒 আপনার ছবি এই ব্রাউজারেই প্রসেস হয়। আপলোড ছাড়া কোনো সার্ভারে পাঠানো হয় না।</p>
+      </aside>
+
+      <section class="panel editor-panel">
+        <div class="editor-head"><div><span class="step">PREVIEW</span><h2>এডিটিং ক্যানভাস</h2></div><div class="canvas-actions"><button id="rotateLeft" class="icon-btn" title="বামে ঘোরান">↶</button><button id="rotateRight" class="icon-btn" title="ডানে ঘোরান">↷</button><button id="flipBtn" class="icon-btn" title="উল্টান">⇋</button><button id="fitBtn" class="icon-btn" title="ফিট">Fit</button></div></div>
+        <div class="canvas-stage" id="canvasStage"><div class="empty-state" id="emptyState"><div class="empty-art">▧</div><b>আপনার ছবিটি এখানে দেখা যাবে</b><span>শুরু করতে বাম পাশ থেকে একটি ছবি আপলোড করুন</span></div><canvas id="previewCanvas" hidden></canvas></div>
+        <div class="canvas-foot"><span id="imageDimensions">কোনো ছবি লোড হয়নি</span><span id="zoomLabel">PREVIEW · FIT TO SCREEN</span></div>
+        <div class="tool-tabs"><button class="tab active" data-tab="adjust">কালার গ্রেডিং</button><button class="tab" data-tab="presets">প্রিসেট</button><button class="tab" data-tab="crop">ক্রপ ও ব্যাকগ্রাউন্ড</button></div>
+        <div class="tool-content" id="tab-adjust">
+          <div class="slider-grid">
+            <div class="slider-control"><label>উজ্জ্বলতা <output id="brightnessOut">100</output></label><input data-filter="brightness" type="range" min="50" max="150" value="100"></div>
+            <div class="slider-control"><label>কনট্রাস্ট <output id="contrastOut">100</output></label><input data-filter="contrast" type="range" min="50" max="160" value="100"></div>
+            <div class="slider-control"><label>স্যাচুরেশন <output id="saturationOut">100</output></label><input data-filter="saturation" type="range" min="0" max="180" value="100"></div>
+            <div class="slider-control"><label>ওয়ার্মথ <output id="warmthOut">0</output></label><input data-filter="warmth" type="range" min="-50" max="50" value="0"></div>
+            <div class="slider-control"><label>ফেড / সফটনেস <output id="fadeOut">0</output></label><input data-filter="fade" type="range" min="0" max="40" value="0"></div>
+          </div>
+          <div class="tool-bottom"><span>পরিবর্তনগুলো প্রিভিউতে সঙ্গে সঙ্গে দেখা যাবে</span><button id="resetAdjust" class="text-btn">সব সমন্বয় রিসেট ↺</button></div>
+        </div>
+        <div class="tool-content" id="tab-presets" hidden>
+          <div class="preset-grid">
+            <button class="preset-card" data-preset="natural"><span class="preset-swatch natural"></span><b>ন্যাচারাল</b><small>স্বাভাবিক স্কিন টোন</small></button>
+            <button class="preset-card" data-preset="studio"><span class="preset-swatch studio"></span><b>স্টুডিও</b><small>ক্লিন ও ব্যালান্সড</small></button>
+            <button class="preset-card" data-preset="vivid"><span class="preset-swatch vivid"></span><b>ভিভিড</b><small>উজ্জ্বল রঙ</small></button>
+            <button class="preset-card" data-preset="warm"><span class="preset-swatch warm"></span><b>ওয়ার্ম</b><small>উষ্ণ কালার টোন</small></button>
+            <button class="preset-card" data-preset="mono"><span class="preset-swatch mono"></span><b>ব্ল্যাক অ্যান্ড হোয়াইট</b><small>সাদাকালো লুক</small></button>
+            <button class="preset-card" data-preset="soft"><span class="preset-swatch soft"></span><b>সফট পোর্ট্রেট</b><small>হালকা সফট লুক</small></button>
+          </div>
+        </div>
+        <div class="tool-content" id="tab-crop" hidden>
+          <div class="crop-options"><div><label class="field-label" for="bgColor">ক্যানভাস ব্যাকগ্রাউন্ড</label><input id="bgColor" type="color" value="#ffffff" class="color-control"></div><div><label class="field-label" for="bgMode">ব্যাকগ্রাউন্ড মোড</label><select id="bgMode" class="control"><option value="original">অরিজিনাল ছবি</option><option value="solid">সাদা / নির্বাচিত রঙের ক্যানভাস</option></select></div></div>
+          <p class="hint">সাইজ প্রিসেট অনুযায়ী ছবি কেন্দ্র থেকে ক্রপ হবে। স্বচ্ছ PNG হলে নির্বাচিত ক্যানভাস রঙ দেখা যাবে। সাধারণ ছবির ব্যাকগ্রাউন্ড আলাদা করে কাটতে AI Background Removal API সংযুক্ত করতে হবে।</p>
+          <div class="crop-buttons"><button id="centerCrop" class="btn btn-secondary">কেন্দ্র থেকে ক্রপ</button><button id="resetCrop" class="btn btn-ghost">অরিজিনাল অনুপাত</button></div>
+        </div>
+      </section>
+
+      <aside class="panel right-panel">
+        <div class="panel-heading"><div><span class="step">04</span><h2>AI টুলস</h2></div><span class="ai-badge">AI READY</span></div>
+        <div class="ai-card"><div class="ai-icon">✦</div><div><b>AI ফটো রিটাচ</b><small>ন্যাচারাল ফেস ও স্কিন রিটাচ</small></div><span class="soon">API লাগবে</span></div>
+        <div class="ai-card"><div class="ai-icon">▧</div><div><b>ব্যাকগ্রাউন্ড রিমুভ</b><small>সাবজেক্ট আলাদা করুন</small></div><span class="soon">API লাগবে</span></div>
+        <div class="ai-card"><div class="ai-icon">✧</div><div><b>AI ছবি উন্নতকরণ</b><small>লো-রেজোলিউশন ছবি উন্নত</small></div><span class="soon">API লাগবে</span></div>
+        <div class="ai-card"><div class="ai-icon">◈</div><div><b>পুরোনো ছবি রিস্টোর</b><small>স্ক্র্যাচ ও ড্যামেজ রিপেয়ার</small></div><span class="soon">API লাগবে</span></div>
+        <div class="divider"></div>
+        <div class="panel-heading compact"><div><span class="step">05</span><h2>স্টুডিও নোট</h2></div></div>
+        <textarea id="jobNote" class="note-box" rows="4" placeholder="কাস্টমারের নাম / অর্ডার নম্বর / বিশেষ নির্দেশনা..."></textarea>
+        <div class="workflow-note"><b>AI সংযোগের জন্য প্রস্তুত</b><p>Backend চালু করে নিরাপদ API Key যোগ করলে AI টুলগুলো সক্রিয় করা যাবে। API Key কখনো এই HTML বা JavaScript ফাইলে রাখবেন না।</p><a href="README.md" target="_blank">সেটআপ নির্দেশিকা দেখুন ↗</a></div>
+      </aside>
+    </section>
+    <footer>© 2026 AI Photo Studio Pro <span>Professional photo workflow · Version 1.0</span></footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
